@@ -1,15 +1,14 @@
 import type { Todo } from '../types/todo';
+import TodoItem from './TodoItem';
 
-export const TodoList = ({ todos }: { todos: Todo[] }) => {
+export const TodoList = ({ todos, removeTask }: { todos: Todo[], removeTask: (id: number) => void }) => {
 
   return (
-    <ul>
+    <div>
       {todos.map((todo: Todo) => (
-        <li key={todo.id} >
-          {todo.text}
-        </li>
+        <TodoItem key={todo.id} todo={todo} removeTask={removeTask}></TodoItem>
       ))}
-    </ul>
+    </div>
   );
 }
 export default TodoList;

@@ -21,6 +21,10 @@ const todos = [{
 function App() {
   const [todoList, setTodoList] = useState(todos);
 
+  const removeTask = (id: number) => {
+    const updatedTodos = todoList.filter(todo => todo.id !== id);
+    setTodoList(updatedTodos);
+  }
   const addTask = (text: string) => {
     const newTask = {
       id: todos.length + 1,
@@ -37,7 +41,7 @@ function App() {
 
       <Title />
       <AddTask addTask={addTask} />
-      <TodoList todos={todoList} />
+      <TodoList todos={todoList} removeTask={removeTask} />
     </>
   )
 }

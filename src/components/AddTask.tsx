@@ -13,12 +13,17 @@ const AddTask = ({ addTask }: { addTask: (task: string) => void }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewTask(event.target.value);
   }
-  return (
-    <>
-      <label>Add a new task:</label>
-      <input value={newTask} onKeyDown={handleAdd} onChange={handleChange} type="text" placeholder="Enter a new task."></input>
-    </>
-  )
+  return (<div className="w-full flex items-center gap-2" >
+    <label className="whitespace-nowrap">Add a new task:</label>
+    <input
+      className="w-full border border-gray-300 rounded px-2 py-1"
+      value={newTask}
+      onKeyDown={handleAdd}
+      onChange={handleChange}
+      type="text"
+      placeholder="Enter a new task."
+    />
+  </div >
+  );
 }
 export default AddTask;
-// This component is used to add a new task to the todo list.
