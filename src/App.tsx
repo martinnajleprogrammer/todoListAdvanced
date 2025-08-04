@@ -1,8 +1,8 @@
-import './App.css'
 import TodoList from './components/TodoList'
 import Title from './components/Title'
 import AddTask from './components/AddTask';
 import { useState } from 'react';
+import type { Todo } from './types/todo';
 
 const todos = [{
   id: 1,
@@ -25,9 +25,22 @@ function App() {
     const updatedTodos = todoList.filter(todo => todo.id !== id);
     setTodoList(updatedTodos);
   }
+
+  const updateTask = (updatedTodo: Todo) => {
+    const index = todoList.findIndex(todo => todo.id === updatedTodo.id);
+    if (index !== -1) {
+      setTodoList(prevTodos => {
+        const newTodos = [...prevTodos];
+        newTodos[index] = updatedTodo;
+        return newTodos;
+      });
+    }
+
+  };
+
   const addTask = (text: string) => {
     const newTask = {
-      id: todos.length + 1,
+      id: todoList.length + 1,
       text,
       completed: false
     };
@@ -36,13 +49,18 @@ function App() {
     console.log('New task added:', newTask);
   };
   return (
-    <>
-      <h1 className="text-3xl font-bold text-red-500">Hello Tailwind</h1>
-
+    <div className='flex flex-col justify-center pt-8 pb-16 pr-32 pl-32 bg-dusty-600 text-ivory-200'>
       <Title />
-      <AddTask addTask={addTask} />
-      <TodoList todos={todoList} removeTask={removeTask} />
-    </>
+      <div className='flex flex-col mt-16'>
+        <AddTask addTask={addTask} />
+        <h2 className='text-ivory-400 text-xl font-semibold mb-4'>Tasks:</h2>
+        <TodoList
+          todos={todoList}
+          removeTask={removeTask}
+          updateTask={updateTask}
+        />
+      </div>
+    </div>
   )
 }
 
