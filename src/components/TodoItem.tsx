@@ -5,10 +5,12 @@ const TodoItem = ({
   todo,
   removeTask,
   updateTask,
+  cloneTask
 }: {
   todo: Todo;
   removeTask: (id: number) => void;
   updateTask: (todo: Todo) => void;
+  cloneTask: (id: number) => void;
 }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo.text);
@@ -32,8 +34,11 @@ const TodoItem = ({
 
   const handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') handleSave();
+    if (event.key === 'Escape' && editing) {
+      setEditing(false);
+      setText(todo.text);
+    }
   };
-
 
   const containerRef = useRef<HTMLDivElement>(null);
   const handleClickOutside = (event: MouseEvent) => {
@@ -80,15 +85,29 @@ const TodoItem = ({
           autoFocus
         />
       )}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          removeTask(todo.id);
-        }}
-        className='p-1 bg-plum-500 text-ivory-500'
-      >
-        X
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          aria-label='Clone task'
+          onClick={(e) => {
+            e.stopPropagation();
+            cloneTask(todo.id);
+          }}
+          className='p-1 bg-plum-500 text-ivory-500'
+        >
+          C
+        </button>
+        <button
+          aria-label='Remove task'
+          onClick={(e) => {
+            e.stopPropagation();
+            removeTask(todo.id);
+          }}
+          className='p-1 bg-plum-500 text-ivory-500'
+        >
+          X
+        </button>
+      </div>
+
     </div>
   );
 };

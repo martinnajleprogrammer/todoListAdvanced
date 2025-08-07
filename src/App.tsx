@@ -25,6 +25,15 @@ function App() {
     const updatedTodos = todoList.filter(todo => todo.id !== id);
     setTodoList(updatedTodos);
   }
+  const cloneTask = (id: number) => {
+    const index = todoList.findIndex(todo => todo.id === id);
+    if (index !== -1) {
+      const newTask = {
+        ...todoList[index], id: todoList.length + 1,
+      };
+      setTodoList([...todoList, newTask]);
+    }
+  }
 
   const updateTask = (updatedTodo: Todo) => {
     const index = todoList.findIndex(todo => todo.id === updatedTodo.id);
@@ -49,7 +58,7 @@ function App() {
     console.log('New task added:', newTask);
   };
   return (
-    <div className='flex flex-col justify-center pt-8 pb-16 pr-32 pl-32 bg-dusty-600 text-ivory-200'>
+    <div className='custom-shadow flex flex-col justify-center pt-8 pb-16 pr-32 pl-32 bg-dusty-600 text-ivory-200 min-h-screen'>
       <Title />
       <div className='flex flex-col mt-16'>
         <AddTask addTask={addTask} />
@@ -58,6 +67,7 @@ function App() {
           todos={todoList}
           removeTask={removeTask}
           updateTask={updateTask}
+          cloneTask={cloneTask}
         />
       </div>
     </div>
