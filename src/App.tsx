@@ -1,78 +1,78 @@
-import TodoList from './components/TodoList'
-import Title from './components/Title'
+import { useState, useMemo } from 'react';
+import TodoList from './components/TodoList';
+import Title from './components/Title';
 import AddTask from './components/AddTask';
-import { useState } from 'react';
+import Filter from './components/Filter';
 import type { Todo } from './types/todo';
 
-const todos = [{
-  id: 1,
-  text: 'Learn React',
-  completed: false
-}, {
-  id: 2,
-  text: 'Learn TypeScript',
-  completed: false
-}, {
-  id: 3,
-  text: 'Build a Todo App',
-  completed: true
-}];
+const initialTodos: Todo[] = [
+  { id: 1, text: 'Learn React', completed: false },
+  { id: 2, text: 'Learn TypeScript', completed: false },
+  { id: 3, text: 'Build a Todo App', completed: true }
+];
 
 function App() {
-  const [todoList, setTodoList] = useState(todos);
+  const [allTodos, setAllTodos] = useState(initialTodos);
+  const [filter, setFilter] = useState<'All' | 'Active' | 'Completed'>('All');
 
   const removeTask = (id: number) => {
-    const updatedTodos = todoList.filter(todo => todo.id !== id);
-    setTodoList(updatedTodos);
-  }
+    setAllTodos(prev => prev.filter(todo => todo.id !== id));
+  };
+
   const cloneTask = (id: number) => {
-    const index = todoList.findIndex(todo => todo.id === id);
-    if (index !== -1) {
-      const newTask = {
-        ...todoList[index], id: todoList.length + 1,
-      };
-      setTodoList([...todoList, newTask]);
-    }
-  }
+    setAllTodos(prev => {
+      const index = prev.findIndex(todo => todo.id === id);
+      if (index === -1) return prev;
+      const newTask = { ...prev[index], id: prev.length + 1 };
+      return [...prev, newTask];
+    });
+  };
 
   const updateTask = (updatedTodo: Todo) => {
-    const index = todoList.findIndex(todo => todo.id === updatedTodo.id);
-    if (index !== -1) {
-      setTodoList(prevTodos => {
-        const newTodos = [...prevTodos];
-        newTodos[index] = updatedTodo;
-        return newTodos;
-      });
-    }
-
+    setAllTodos(prev =>
+      prev.map(todo =>
+        todo.id === updatedTodo.id ? updatedTodo : todo
+      )
+    );
   };
 
   const addTask = (text: string) => {
-    const newTask = {
-      id: todoList.length + 1,
-      text,
-      completed: false
-    };
-    setTodoList([...todoList, newTask]);
-
-    console.log('New task added:', newTask);
+    setAllTodos(prev => [
+      ...prev,
+      { id: prev.length + 1, text, completed: false }
+    ]);
   };
+
+  const filteredTodos = useMemo(() => {
+    switch (filter) {
+      case 'Active':
+        return allTodos.filter(todo => !todo.completed);
+      case 'Completed':
+        return allTodos.filter(todo => todo.completed);
+      case 'All':
+      default:
+        return allTodos;
+    }
+  }, [allTodos, filter]);
+
   return (
     <div className='custom-shadow flex flex-col justify-center pt-8 pb-16 pr-32 pl-32 bg-dusty-600 text-ivory-200 min-h-screen'>
       <Title />
       <div className='flex flex-col mt-16'>
         <AddTask addTask={addTask} />
-        <h2 className='text-ivory-400 text-xl font-semibold mb-4'>Tasks:</h2>
+        <h2 className='text-ivory-400 text-xl font-semibold mb-2'>Tasks:</h2>
+
+        <Filter filter={filter} handleFilter={(f: string) => setFilter(f as any)} />
+
         <TodoList
-          todos={todoList}
+          todos={filteredTodos}
           removeTask={removeTask}
           updateTask={updateTask}
           cloneTask={cloneTask}
         />
       </div>
     </div>
-  )
+  );
 }
 
 export default App;
-
