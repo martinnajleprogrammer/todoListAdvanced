@@ -1,4 +1,3 @@
-import { useState } from "react";
 const Filter = ({ handleFilter, filter }: { filter: string, handleFilter: (filter: string) => void }) => {
   const handleFilterChange = (filter: string) => {
     handleFilter(filter);
@@ -13,7 +12,8 @@ const Filter = ({ handleFilter, filter }: { filter: string, handleFilter: (filte
         checked={filter === "All"}
         onChange={() => handleFilterChange("All")}
       />
-      <label htmlFor="all">All</label>
+      <label className='pr-2 text-plum-400 dark:text-ivory-200'
+        htmlFor="all">All</label>
       <input
         type="radio"
         id="active"
@@ -22,7 +22,8 @@ const Filter = ({ handleFilter, filter }: { filter: string, handleFilter: (filte
         checked={filter === "Active"}
         onChange={() => handleFilterChange("Active")}
       />
-      <label htmlFor="active">Active</label>
+      <label className='pr-2 text-plum-400 dark:text-ivory-200'
+        htmlFor="active">Active</label>
       <input
         type="radio"
         id="completed"
@@ -31,7 +32,8 @@ const Filter = ({ handleFilter, filter }: { filter: string, handleFilter: (filte
         checked={filter === "Completed"}
         onChange={() => handleFilterChange("Completed")}
       />
-      <label htmlFor="completed">Completed</label>
+      <label className='pr-2 text-plum-400 dark:text-ivory-200'
+        htmlFor="completed">Completed</label>
     </div>
   );
 }

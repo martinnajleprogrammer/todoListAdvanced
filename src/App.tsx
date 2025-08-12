@@ -4,6 +4,8 @@ import Title from './components/Title';
 import AddTask from './components/AddTask';
 import Filter from './components/Filter';
 import type { Todo } from './types/todo';
+import Totals from './components/Totals';
+import ToggleDarkMode from './components/ToggleDarkMode';
 
 const initialTodos: Todo[] = [
   { id: 1, text: 'Learn React', completed: false },
@@ -56,11 +58,14 @@ function App() {
   }, [allTodos, filter]);
 
   return (
-    <div className='custom-shadow flex flex-col justify-center pt-8 pb-16 pr-32 pl-32 bg-dusty-600 text-ivory-200 min-h-screen'>
+
+    <div className='custom-shadow flex flex-col justify-center pt-8 pb-16 pr-32 pl-32  bg-ivory-200 dark:bg-dusty-500  text-ivory-200 min-h-screen'>
+      <ToggleDarkMode />
+
       <Title />
       <div className='flex flex-col mt-16'>
         <AddTask addTask={addTask} />
-        <h2 className='text-ivory-400 text-xl font-semibold mb-2'>Tasks:</h2>
+        <h2 className=' dark:text-ivory-200 text-xl font-semibold mb-2 text-plum-400'>Tasks:</h2>
 
         <Filter filter={filter} handleFilter={(f: string) => setFilter(f as any)} />
 
@@ -70,6 +75,8 @@ function App() {
           updateTask={updateTask}
           cloneTask={cloneTask}
         />
+        <Totals taskName={filter} number={filteredTodos.length} />
+
       </div>
     </div>
   );
