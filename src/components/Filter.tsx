@@ -1,5 +1,7 @@
-const Filter = ({ handleFilter, filter }: { filter: string, handleFilter: (filter: string) => void }) => {
-  const handleFilterChange = (filter: string) => {
+import type { FilterType } from "../types/todo";
+
+const Filter = ({ handleFilter, filter }: { filter: FilterType, handleFilter: (filter: FilterType) => void }) => {
+  const handleFilterChange = (filter: FilterType) => {
     handleFilter(filter);
   };
   return (

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import type { Todo } from '../types/todo';
 
 const TodoItem = ({
@@ -8,9 +8,10 @@ const TodoItem = ({
   cloneTask
 }: {
   todo: Todo;
-  removeTask: (id: number) => void;
+  key: string;
+  removeTask: (id: string) => void;
   updateTask: (todo: Todo) => void;
-  cloneTask: (id: number) => void;
+  cloneTask: (id: string) => void;
 }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo.text);
@@ -24,13 +25,13 @@ const TodoItem = ({
     setText(event.target.value);
   };
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     const trimmed = text.trim();
     if (trimmed && trimmed !== todo.text) {
       updateTask({ ...todo, text: trimmed });
     }
     setEditing(false);
-  };
+  }, [text, todo, updateTask]);
 
   const handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') handleSave();
@@ -41,23 +42,24 @@ const TodoItem = ({
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      editing &&
-      containerRef.current &&
-      !containerRef.current.contains(event.target as Node)
-    ) {
-      handleSave();
-      setEditing(false);
-    }
-  };
+
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        editing &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        handleSave();
+        setEditing(false);
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [editing, text]);
+  }, [editing, text, handleSave]);
 
   const handleClick = () => {
     if (!editing) {
@@ -104,7 +106,9 @@ const TodoItem = ({
           aria-label="Clone task"
           onClick={(e) => {
             e.stopPropagation();
-            cloneTask(todo.id);
+            if (todo.id) {
+              cloneTask(todo.id);
+            }
           }}
           className="p-1 rounded bg-plum-500 text-ivory-500 hover:bg-plum-600
                      dark:bg-plum-700 dark:hover:bg-plum-600 dark:border-plum-400"
@@ -115,7 +119,9 @@ const TodoItem = ({
           aria-label="Remove task"
           onClick={(e) => {
             e.stopPropagation();
-            removeTask(todo.id);
+            if (todo.id) {
+              removeTask(todo.id);
+            }
           }}
           className="p-1 rounded bg-plum-500 text-ivory-500 hover:bg-plum-600
                      dark:bg-plum-700 dark:hover:bg-plum-600 dark:border-plum-400"
