@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import TodoList from './components/TodoList';
 import Title from './components/Title';
 import AddTask from './components/AddTask';
@@ -11,6 +11,38 @@ function App() {
   const [allTodos, setAllTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<'All' | 'Active' | 'Completed'>('All');
 
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    inputRef.current.click(); // abre el selector de archivos
+  };
+  const saveJson = (filename = "todoList.json") => {
+    const blob = new Blob([JSON.stringify(allTodos, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+  const loadJson = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        setAllTodos(JSON.parse(event.target.result));
+      } catch {
+        alert("Invalid Json file");
+        console.error("Invalid JSON file format");
+        return;
+      }
+    };
+    reader.readAsText(file);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -117,7 +149,28 @@ function App() {
           updateTask={updateTask}
           cloneTask={cloneTask}
         />
-        <Totals taskName={filter} number={filteredTodos.length} />
+        <div className='flex flex-row items-center mt-4'>
+          <Totals taskName={filter} number={filteredTodos.length} />
+          <button
+            className='bg-plum-400 hover:bg-plum-500 text-ivory-200 px-4 py-2 rounded-md w-fit ml-4'
+            onClick={() => saveJson()}
+          >
+            Export Json
+          </button>
+          <div
+            onClick={handleClick}
+            className="bg-plum-400 hover:bg-plum-500 text-ivory-200 px-4 py-2 rounded-md w-fit ml-4 cursor-pointer"
+          >
+            Load JSON
+            <input
+              type="file"
+              accept=".json"
+              onChange={loadJson}
+              ref={inputRef}
+              style={{ display: "none" }} // ocultamos el input
+            />
+          </div>
+        </div>
 
       </div>
     </div>
