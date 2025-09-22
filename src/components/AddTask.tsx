@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectIsDBConnected } from "../store/slices/dbSlice";
 
 const AddTask = ({ addTask }: { addTask: (task: string) => void }) => {
   const [newTask, setNewTask] = useState<string>('');
@@ -9,10 +11,11 @@ const AddTask = ({ addTask }: { addTask: (task: string) => void }) => {
       setNewTask('');
     }
   }
+  const isConnected = useSelector(selectIsDBConnected);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewTask(event.target.value);
   }
-  return (<div className='bg-ivory-400  dark:bg-plum-800 border border-plum-300 w-full flex items-center gap-2 p-4 rounded-sm mb-8' >
+  return <div className='bg-ivory-400  dark:bg-plum-800 border border-plum-300 w-full flex items-center gap-2 p-4 rounded-sm mb-8' >
     <label className="whitespace-nowrap font-bold text-plum-400 dark:text-ivory-200">Add a new task:</label>
     <input
       className="w-full border rounded px-2 py-1 text-plum-400 bg-ivory-100 focus:outline-none focus:ring-2 focus:ring-plum-300 dark:bg-plum-700 dark:text-ivory-200 dark:focus:ring-plum-400"
@@ -21,8 +24,8 @@ const AddTask = ({ addTask }: { addTask: (task: string) => void }) => {
       onChange={handleChange}
       type="text"
       placeholder="Enter a new task."
+      disabled={isConnected !== "connected"}
     />
-  </div >
-  );
-}
+  </div>
+};
 export default AddTask;

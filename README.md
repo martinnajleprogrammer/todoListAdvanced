@@ -13,3 +13,9 @@ An advanced todoList to review concepts, learn new stuff and get something to di
 - Initial support to an unique type of user.
 - Documentation for key actors: just an user final.
 - MVP doesn't include: filters, tags, user managmente, timeouts, APIs (first stage).
+
+# DATABASE
+
+Command to run the database server:
+
+`npx json-server database/db.json`

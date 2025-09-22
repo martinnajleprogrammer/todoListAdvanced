@@ -1,4 +1,4 @@
-import type { FilterType } from "../types/todo";
+import type { FilterType } from "./TodoList/todo";
 
 const Filter = ({ handleFilter, filter }: { filter: FilterType, handleFilter: (filter: FilterType) => void }) => {
   const handleFilterChange = (filter: FilterType) => {

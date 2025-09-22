@@ -1,3 +1,29 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "id": "e8e9",
+      "text": "new task",
+      "completed": false
+    },
+    {
+      "id": "f9e0",
+      "text": "other task",
+      "completed": false
+    },
+    {
+      "id": "a9c7",
+      "text": "alala",
+      "completed": false
+    },
+    {
+      "id": "95d9",
+      "text": "Revisar Linkedin ",
+      "completed": false
+    },
+    {
+      "id": "5415",
+      "text": "Chequear trello",
+      "completed": false
+    }
+  ]
 }

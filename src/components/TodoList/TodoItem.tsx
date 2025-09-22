@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import type { Todo } from '../types/todo';
+import type { Todo } from './todo';
 
 const TodoItem = ({
   todo,
@@ -11,11 +11,10 @@ const TodoItem = ({
   key: string;
   removeTask: (id: string) => void;
   updateTask: (todo: Todo) => void;
-  cloneTask: (id: string) => void;
+  cloneTask: (todo: Todo) => void;
 }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo.text);
-
   const handleEdit = () => {
     setText(todo.text);
     setEditing(true);
@@ -28,7 +27,7 @@ const TodoItem = ({
   const handleSave = useCallback(() => {
     const trimmed = text.trim();
     if (trimmed && trimmed !== todo.text) {
-      updateTask({ ...todo, text: trimmed });
+      updateTask({ ...todo, text: trimmed, dirty: true });
     }
     setEditing(false);
   }, [text, todo, updateTask]);
@@ -63,7 +62,7 @@ const TodoItem = ({
 
   const handleClick = () => {
     if (!editing) {
-      updateTask({ ...todo, completed: !todo.completed });
+      updateTask({ ...todo, completed: !todo.completed, dirty: true });
     }
   };
 
@@ -107,7 +106,7 @@ const TodoItem = ({
           onClick={(e) => {
             e.stopPropagation();
             if (todo.id) {
-              cloneTask(todo.id);
+              cloneTask(todo);
             }
           }}
           className="p-1 rounded bg-plum-500 text-ivory-500 hover:bg-plum-600
@@ -128,6 +127,7 @@ const TodoItem = ({
         >
           X
         </button>
+        {todo.dirty && (<i className="em em-alarm_clock" aria-label="ALARM CLOCK"></i>)}
       </div>
     </div>
   );

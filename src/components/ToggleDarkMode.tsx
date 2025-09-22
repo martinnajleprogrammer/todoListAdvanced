@@ -1,9 +1,9 @@
-import useDarkMode from "../hooks/darkMode";
+import useDarkMode from "../hooks/useDarkMode";
 
 const ToggleDarkMode = () => {
-  const [darkMode, setDarkMode] = useDarkMode();
+  const [darkMode, toggle] = useDarkMode();
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    toggle();
   };
   return (<div className="absolute top-8 right-8 bg-ivory-200 dark:bg-plum-800 text-gray-900 dark:text-gray-100 flex flex-col items-center justify-center w-48 border border-gray-300 dark:border-gray-700 rounded-lg p-4 shadow-md">
     <p className="mb-2">Mode {darkMode ? 'Dark' : 'Light'}</p>

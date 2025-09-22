@@ -72,3 +72,23 @@ button:focus-visible {
 .custom-shadow {
   box-shadow: 0 5px 5px #766B74;
 }
+
+.sort {
+  margin: 0 auto;
+}
+
+.sort-asc {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid currentColor;
+}
+
+.sort-desc {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid currentColor;
+}

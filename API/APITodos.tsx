@@ -1,7 +1,5 @@
-import type { Todo } from '../src/types/todo';
-
-// Base API URL - change this for production
-const BASE_URL = 'http://localhost:3000';
+import type { Todo } from '../src/components/TodoList/todo';
+const VITE_BD_URL = import.meta.env.VITE_BD_URL || 'http://localhost:3000';
 
 async function request<T>(
   endpoint: string,
@@ -9,7 +7,7 @@ async function request<T>(
   signal?: AbortSignal
 ): Promise<T> {
   try {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
+    const res = await fetch(`${VITE_BD_URL}${endpoint}`, {
       headers: { 'Content-Type': 'application/json' },
       ...options,
       signal
