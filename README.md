@@ -1,21 +1,36 @@
-# todoListAdvanced
-An advanced todoList to review concepts, learn new stuff and get something to display.
-=======
-# React + TypeScript + Vite
+# Todo List Advanced
 
-## MVP 
-- Main objective of the MVP: Functional app to handle a list of tasks (todo/done). The app uses React + Vite + Tailwind in a landing page.
-- Identify minimum features.
-- List of tasks with state `todo|done`.
-- Text input to add tasks pressing "Enter".
-- Button in a side of each task to remove it. 
-- Edit inline the text to modify the task (double click).
-- Initial support to an unique type of user.
-- Documentation for key actors: just an user final.
-- MVP doesn't include: filters, tags, user managmente, timeouts, APIs (first stage).
+A to-do app built to practice state management patterns beyond `useState`: Redux Toolkit, Redux Saga for side effects, and persisted state, backed by a local JSON server.
 
-# DATABASE
+## Features
 
-Command to run the database server:
+- Add tasks with Enter, remove them, and edit inline with a double click.
+- Tasks have a `todo` / `done` state, with filters and totals.
+- Dark mode toggle.
+- State persisted across reloads (`redux-persist`).
+- Syncs with a local REST API (`json-server`) and shows the database status in the UI.
 
-`npx json-server database/db.json`
+## Stack
+
+React 19, TypeScript, Vite, Tailwind CSS, Redux Toolkit, Redux Saga, redux-persist, json-server.
+
+## Project structure
+
+```
+src/store/        slices (todos, ui, db, queue sync) and sagas
+src/components/   task list, filters, totals, db status, dark mode
+src/hooks/        todos, dark mode and JSON helpers
+database/db.json mock database
+```
+
+## Run it locally
+
+```bash
+npm install
+npm run server   # json-server on port 3001
+npm run dev      # in another terminal
+```
+
+## Notes
+
+Practice project: the goal was to compare state management approaches and to handle async side effects and loading/error states in a small, well-scoped app. No automated tests yet.
